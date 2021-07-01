@@ -1,0 +1,25 @@
+﻿@using PustokHomework.ViewModels 
+@model List<BasketItemViewModel>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@foreach (var item in Model)
+{
+    <div class=" single-cart-block ">
+        <div class="cart-product">
+            <a href="product-details.html" class="image">
+                <img src="~/uploads/@item.Poster" alt="">
+            </a>
+            <div class="content">
+                <h3 class="title">
+                    <a href="product-details.html">
+                        @item.Name  <br /> @item.Code
+                    </a>
+                </h3>
+                <p class="price"><span class="qty">@item.Count ×</span> £@item.Price</p>
+                <button class="cross-btn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+}

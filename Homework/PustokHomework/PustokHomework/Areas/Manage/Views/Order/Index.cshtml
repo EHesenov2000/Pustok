@@ -1,0 +1,142 @@
+﻿@using PustokHomework.Models
+@model List<Order>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    int count;
+    if (ViewBag.SelectedPage == 1)
+    {
+        count = 0;
+    }
+    else
+    {
+        count = (ViewBag.SelectedPage - 1) * 4;
+    }
+}
+@{
+    int totalPage = (int)ViewBag.TotalPage;
+    int selectedPage = (int)ViewBag.SelectedPage;
+}
+
+<div class="container-fluid">
+    <table class="table table-bordered">
+        <thead>
+            <tr class="row">
+                <th class="col-md-1">#</th>
+                <th class="col-md-2">User</th>
+                <th class="col-md-1">Item count</th>
+                <th class="col-md-2">TotalPrice</th>
+                <th class="col-md-1">Benefit</th>
+                <th class="col-md-2">Date</th>
+                <th class="col-md-2">Status</th>
+                <th class="col-md-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr class="row">
+                    <td class="col-md-1">@count</td>
+                    <td class="col-md-2">@item.FullName</td>
+                    <td class="col-md-1">@item.OrderBooks.Count()</td>
+                    <td class="col-md-2">@item.TotalPrice</td>
+                    @{
+                        var totalPrPrice = item.OrderBooks.Sum(x => (x.ProducingPrice * x.Count));
+                    }
+                    <td class="col-md-1">@(item.TotalPrice - totalPrPrice)</td>
+                    <td class="col-md-2">@item.CreatedAt.ToString("dd MMM yyyy")</td>
+                    <td class="col-md-2">
+                        @{
+
+                            if (item.Status == PustokHomework.Enums.OrderStatus.Accepted)
+                            {
+                                <span style="padding:10px" class="badge badge-pill badge-secondary">Accepted</span>
+                            }
+                            else if (item.Status == PustokHomework.Enums.OrderStatus.Pending)
+                            {
+                                <span style="padding:10px" class="badge badge-pill badge-info">Pending</span>
+                            }
+                            else
+                            {
+                                <span style="padding:10px" class="badge badge-pill badge-danger">@(item.Status == PustokHomework.Enums.OrderStatus.UserReject?"User rejected":"Admin rejected")</span>
+                            }
+
+
+                        }
+                    </td>
+                    <td class="col-md-1">
+                        <a class="btn btn-warning" asp-action="detail" asp-route-id="@item.Id">Detail</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" asp-route-page="1">ilk</a></li>
+            <li class="page-item">
+                <a class="page-link" asp-route-page="@(ViewBag.SelectedPage>1?ViewBag.SelectedPage-1:1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            @{
+                int b;
+                int s;
+            }
+            @if (selectedPage == 1)
+            {
+                b = 1;
+                if (totalPage >= 3)
+                {
+                    s = 3;
+
+                }
+                else
+                {
+                    s = totalPage;
+                }
+            }
+            else if (selectedPage == totalPage)
+            {
+                if (totalPage - 2 > 0)
+                {
+                    b = totalPage - 2;
+
+                }
+                else if (totalPage - 1 > 0)
+                {
+                    b = totalPage - 1;
+
+                }
+                else
+                {
+                    b = totalPage;
+                }
+                s = totalPage;
+            }
+            else
+            {
+                b = selectedPage - 1;
+                s = selectedPage + 1;
+            }
+            @for (int i = b; i <= s; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-route-page="@i" style="@(i==selectedPage?"background-color:blue;color:white;":"")">@i</a></li>
+
+            }
+            <li class="page-item">
+                <a class="page-link" asp-route-page="@(ViewBag.SelectedPage<ViewBag.TotalPage?ViewBag.SelectedPage+1:ViewBag.TotalPage)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" asp-route-page="@ViewBag.TotalPage">son</a></li>
+        </ul>
+    </nav>
+</div>

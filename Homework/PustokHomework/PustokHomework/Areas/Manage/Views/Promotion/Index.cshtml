@@ -1,0 +1,129 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using PustokHomework.Models
+@model List<Promotion>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    int count;
+    if (ViewBag.SelectedPage == 1)
+    {
+        count = 0;
+    }
+    else
+    {
+        count = (ViewBag.SelectedPage - 1) * 4;
+    }
+}
+
+@{
+    int totalPage = (int)ViewBag.TotalPageCount;
+    int selectedPage = (int)ViewBag.SelectedPage;
+}
+<div class="container-fluid">
+    <div class="row d-flex justify-content-end mb-2">
+        <div class="col-md-1 m-3">
+            <a asp-action="create" class="d-flex m-3" style="text-decoration:none;">
+                <button class="backendButton px-4 py-2 mr--30" style=" border-radius: 20px; color: white; background-image: linear-gradient(to right,blue,red); font: bold; ">CREATE</button>
+            </a>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="row">
+                <th class="col-md-1">#</th>
+                <th class="col-md-3">Title</th>
+                <th class="col-md-3">SubTitle</th>
+                <th class="col-md-2">Redirect Url</th>
+                <th class="col-md-1">LocationStatus</th>
+                <th class="col-md-2"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr class="row">
+                    <td class="col-md-1">@count</td>
+                    <td class="col-md-3">@item.Title</td>
+                    <td class="col-md-3">@item.SubTitle</td>
+                    <td class="col-md-2">@item.RedirectUrl</td>
+                    <td class="col-md-1">@item.LocationStatus</td>
+                    <td class="col-md-2">
+                        <a class="btn btn-warning" asp-action="edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-info" asp-action="delete" asp-route-id="@item.Id">Delete</a>
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" asp-route-page="1">ilk</a></li>
+            <li class="page-item">
+                <a class="page-link" asp-route-page="@(ViewBag.SelectedPage>1?ViewBag.SelectedPage-1:1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            @{
+                int b;
+                int s;
+            }
+            @if (selectedPage == 1)
+            {
+                b = 1;
+                if (totalPage >= 3)
+                {
+                    s = 3;
+
+                }
+                else
+                {
+                    s = totalPage;
+                }
+            }
+            else if (selectedPage == totalPage)
+            {
+                if (totalPage - 2 > 0)
+                {
+                    b = totalPage - 2;
+
+                }
+                else if (totalPage - 1 > 0)
+                {
+                    b = totalPage - 1;
+
+                }
+                else
+                {
+                    b = totalPage;
+                }
+                s = totalPage;
+            }
+            else
+            {
+                b = selectedPage - 1;
+                s = selectedPage + 1;
+            }
+            @for (int i = b; i <= s; i++)
+            {
+                <li class="page-item"><a class="page-link" asp-route-page="@i" style="@(i==selectedPage?"background-color:blue;color:white;":"")">@i</a></li>
+
+            }
+            <li class="page-item">
+                <a class="page-link" asp-route-page="@(ViewBag.SelectedPage<ViewBag.TotalPageCount?ViewBag.SelectedPage+1:ViewBag.TotalPageCount)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" asp-route-page="@ViewBag.TotalPageCount">son</a></li>
+        </ul>
+    </nav>
+</div>
+<style>
+    .backendButton:hover {
+        background-image: linear-gradient(to right,red,blue) !important;
+    }
+</style>

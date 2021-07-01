@@ -1,0 +1,18 @@
+﻿@using PustokHomework.Models
+@model List<Promotion>
+<section class="section-margin">
+    <h2 class="sr-only">Promotion Section</h2>
+    <div class="container">
+        <div class="row space-db--30">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-6 col-md-6 mb--30">
+                    <a href="@item.RedirectUrl" class="promo-image promo-overlay">
+                        <img src="~/image/bg-images/@item.Image" alt="">
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>

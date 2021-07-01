@@ -1,0 +1,320 @@
+﻿@using PustokHomework.ViewModels;
+@model BookDetailViewModel
+@{
+    ViewData["Title"] = "Detail";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<section class="breadcrumb-section">
+    <h2 class="sr-only">Site Breadcrumb</h2>
+    <div class="container">
+        <div class="breadcrumb-contents">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">Product Details</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</section>
+<main class="inner-page-sec-padding-bottom">
+    <div class="container">
+        <div class="row  mb--60">
+            <div class="col-lg-5 mb--30">
+                <!-- Product Details Slider Big Image-->
+                <div class="product-details-slider sb-slick-slider arrow-type-two" data-slick-setting='{
+              "slidesToShow": 1,
+              "arrows": false,
+              "fade": true,
+              "draggable": false,
+              "swipe": false,
+              "asNavFor": ".product-slider-nav"
+              }'>
+                    @foreach (var item in Model.Book.BookImages)
+                    {
+                        <div class="single-slide">
+                            <img src="~/uploads/@item.Image" alt="">
+                        </div>
+                    }
+
+                </div>
+                <!-- Product Details Slider Nav -->
+                <div class="mt--30 product-slider-nav sb-slick-slider arrow-type-two" data-slick-setting='{
+            "infinite":true,
+              "autoplay": true,
+              "autoplaySpeed": 8000,
+              "slidesToShow": 4,
+              "arrows": true,
+              "prevArrow":{"buttonClass": "slick-prev","iconClass":"fa fa-chevron-left"},
+              "nextArrow":{"buttonClass": "slick-next","iconClass":"fa fa-chevron-right"},
+              "asNavFor": ".product-details-slider",
+              "focusOnSelect": true
+              }'>
+                    @foreach (var item in Model.Book.BookImages)
+                    {
+                        <div class="single-slide">
+                            <img src="~/uploads/@item.Image" alt="">
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="product-details-info pl-lg--30 ">
+                    <p class="tag-block">
+                        @if (Model.Book.BookTags.Count() > 0)
+                        {
+                        Tags:
+                            for (int i = 0; i < Model.Book.BookTags.Count; i++)
+                            {
+                                <a href="#">@Model.Book.BookTags[i].Tag.Name</a> @((i+1)!=Model.Book.BookTags.Count?",":"")
+                            }
+                        }
+
+                    </p>
+                    <h3 class="product-title">@Model.Book.Name</h3>
+                    <ul class="list-unstyled">
+                        <li>Author: <a href="#" class="list-value font-weight-bold"> @Model.Book.Author.FullName</a></li>
+                        <li>Category: <a href="#" class="list-value font-weight-bold"> @Model.Book.Category.Name</a></li>
+                        <li>Product Code: <span class="list-value"> @Model.Book.Code</span></li>
+                        <li>Availability: <span class="list-value"> @(Model.Book.IsAvailable?"In Stock":"Out Stock")</span></li>
+                    </ul>
+                    <div class="price-block">
+                        @if (Model.Book.DiscountPercent > 0)
+                        {
+                            <span class="price-new">£@Model.Book.DicountedPrice</span>
+                            <del class="price-old">£@Model.Book.Price</del>
+                        }
+                        else
+                        {
+                            <span class="price-new">£@Model.Book.Price</span>
+                        }
+
+                    </div>
+                    <div class="rating-widget">
+                        <div class="rating-block">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Model.Book.Rate)
+                                {
+                                    <span class="fas fa-star star_on"></span>
+                                }
+                                else
+                                {
+                                    <span class="fas fa-star "></span>
+                                }
+                            }
+
+                        </div>
+                        <div class="review-widget">
+                            <a href="#">(1 Reviews)</a> <span>|</span>
+                            <a href="#">Write a review</a>
+                        </div>
+                    </div>
+                    <article class="product-details-article">
+                        <h4 class="sr-only">Product Summery</h4>
+                        <p>
+                            @Model.Book.Subtitle
+                        </p>
+                    </article>
+                    <div class="add-to-cart-row">
+                        <div class="count-input-block">
+                            <span class="widget-label">Qty</span>
+                            <input type="number" class="form-control text-center" value="1">
+                        </div>
+                        <div class="add-cart-btn">
+                            <a asp-action="addbasket" asp-controller="book" asp-route-id="@Model.Book.Id" class="btn btn-outlined--primary">
+                                <span class="plus-icon">+</span>Add to
+                                Cart
+                            </a>
+                        </div>
+                    </div>
+                    <div class="compare-wishlist-row">
+                        <a href="#" class="add-link"><i class="fas fa-heart"></i>Add to Wish List</a>
+                        <a href="#" class="add-link"><i class="fas fa-random"></i>Add to Compare</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sb-custom-tab review-tab section-padding">
+            <ul class="nav nav-tabs nav-style-2" id="myTab2" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#tab-1" role="tab"
+                       aria-controls="tab-1" aria-selected="true">
+                        DESCRIPTION
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tab2" data-toggle="tab" href="#tab-2" role="tab"
+                       aria-controls="tab-2" aria-selected="true">
+                        @{
+                            int commentCount = Model.Book.BookComments.Count();
+                        }
+                        REVIEWS @(commentCount > 0?"("+commentCount+")":"")
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content space-db--20" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab1">
+                    <article class="review-article">
+                        <h1 class="sr-only">Tab Article</h1>
+                        <p>
+                            @Model.Book.Desc
+                        </p>
+                    </article>
+                </div>
+                <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab2">
+                    <div class="review-wrapper">
+                        <h2 class="title-lg mb--20">1 REVIEW FOR AUCTOR GRAVIDA ENIM</h2>
+
+
+                        <div class="comments">
+                            @await Html.PartialAsync("_BookComments", Model.Book.BookComments.OrderByDescending(x => x.CreatedAt).Take(2).ToList())
+                        </div>
+                        @if (Model.Book.BookComments.Count() > 2)
+                        {
+                            <div class="text-center">
+                                <a class="load-comments" data-totalpage="@ViewBag.TotalCommentPage" asp-action="LoadComment" data-nextPage="2" asp-route-id="@Model.Book.Id">
+                                    Load more
+                                </a>
+                            </div>
+                        }
+                        <h2 class="title-lg mb--20 pt--15">ADD A REVIEW</h2>
+                        <div class="rating-row pt-2">
+                            <form asp-action="addcomment" method="post" class="mt--15 site-form ">
+                                <p class="d-block">Your Rating</p>
+                                <div class="d-flex align-items-start">
+                                    <span class="rating-widget-block d-flex">
+                                        <input type="radio" value="5" name="Rate" id="star1">
+                                        <label for="star1"></label>
+                                        <input type="radio" value="4" name="Rate" id="star2">
+                                        <label for="star2"></label>
+                                        <input type="radio" value="3" name="Rate" id="star3">
+                                        <label for="star3"></label>
+                                        <input type="radio" value="2" name="Rate" id="star4">
+                                        <label for="star4"></label>
+                                        <input type="radio" value="1" name="Rate" id="star5">
+                                        <label for="star5"></label>
+                                    </span>
+                                </div>
+                                <input type="hidden" name="BookId" value="@Model.Book.Id" />
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="message">Comment</label>
+                                            <textarea name="Text" id="message" cols="30" rows="10"
+                                                      class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="submit-btn">
+                                            <button type="submit" class="btn btn-black">Post Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="tab-product-details">
+          <div class="brand">
+            <img src="image/others/review-tab-product-details.jpg" alt="">
+          </div>
+          <h5 class="meta">Reference <span class="small-text">demo_5</span></h5>
+          <h5 class="meta">In stock <span class="small-text">297 Items</span></h5>
+          <section class="product-features">
+            <h3 class="title">Data sheet</h3>
+            <dl class="data-sheet">
+              <dt class="name">Compositions</dt>
+              <dd class="value">Viscose</dd>
+              <dt class="name">Styles</dt>
+              <dd class="value">Casual</dd>
+              <dt class="name">Properties</dt>
+              <dd class="value">Maxi Dress</dd>
+            </dl>
+          </section>
+        </div> -->
+    </div>
+    <!--=================================
+        RELATED PRODUCTS BOOKS
+    ===================================== -->
+    <section class="">
+        <div class="container">
+            <div class="section-title section-title--bordered">
+                <h2>RELATED PRODUCTS</h2>
+            </div>
+            <div class="product-slider sb-slick-slider slider-border-single-row" data-slick-setting='{
+                "autoplay": true,
+                "autoplaySpeed": 8000,
+                "slidesToShow": 4,
+                "dots":true
+            }' data-slick-responsive='[
+                {"breakpoint":1200, "settings": {"slidesToShow": 4} },
+                {"breakpoint":992, "settings": {"slidesToShow": 3} },
+                {"breakpoint":768, "settings": {"slidesToShow": 2} },
+                {"breakpoint":480, "settings": {"slidesToShow": 1} }
+            ]'>
+                @foreach (var item in Model.RelatedBooks)
+                {
+                    <div class="single-slide">
+                        <div class="product-card">
+                            <div class="product-header">
+                                <a href="#" class="author">
+                                    @item.Author.FullName
+                                </a>
+                                <h3><a asp-action="detail" asp-controller="book" asp-route-id="@item.Id">@item.Name</a></h3>
+                            </div>
+                            <div class="product-card--body">
+                                <div class="card-image">
+                                    <img src="~/uploads/@item.BookImages.FirstOrDefault(x=>x.IsPoster)?.Image" alt="">
+                                    <div class="hover-contents">
+                                        <a asp-action="detail" asp-controller="book" asp-route-id="@item.Id" class="hover-image">
+                                            <img src="~/uploads/@item.BookImages.FirstOrDefault(x=>x.IsHoverPoster)?.Image" alt="">
+                                        </a>
+                                        <div class="hover-btns">
+                                            <a href="cart.html" class="single-btn">
+                                                <i class="fas fa-shopping-basket"></i>
+                                            </a>
+                                            <a href="wishlist.html" class="single-btn">
+                                                <i class="fas fa-heart"></i>
+                                            </a>
+                                            <a href="compare.html" class="single-btn">
+                                                <i class="fas fa-random"></i>
+                                            </a>
+                                            <a asp-action="BookModalPartial" asp-controller="home" asp-route-id="@item.Id" class="single-btn book-modal">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="price-block">
+                                    @if (item.DiscountPercent > 0)
+                                    {
+                                        <span class="price">£@item.DicountedPrice</span>
+                                        <del class="price-old">£@item.Price</del>
+                                        <span class="price-discount">@item.DiscountPercent%</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="price">£@item.Price</span>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+    <!-- Modal -->
+    <div class="modal fade modal-quick-view" id="quickModal" tabindex="-1" role="dialog"
+         aria-labelledby="quickModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+
+        </div>
+    </div>
+</main>

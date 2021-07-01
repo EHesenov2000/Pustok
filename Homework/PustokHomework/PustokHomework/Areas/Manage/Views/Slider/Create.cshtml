@@ -1,0 +1,45 @@
+﻿@using PustokHomework.Models
+@model Slider
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="@Model.Title">Title</label>
+            <input type="text" asp-for="@Model.Title" class="form-control" id="title" placeholder="Title">
+            <span asp-validation-for="@Model.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Subtitle">SubTitle</label>
+            <textarea asp-for="@Model.Subtitle" class="form-control" id="Subtitle" rows="3"></textarea>
+            <span asp-validation-for="@Model.Subtitle" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Price">Price</label>
+            <input asp-for="@Model.Price" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Order">Order</label>
+            <input asp-for="@Model.Order" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.Order" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.PhotoFile">Photo</label>
+            <input asp-for="@Model.PhotoFile" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.PhotoFile" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.RedirectUrl">RedirectUrl</label>
+            <input asp-for="@Model.RedirectUrl" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.RedirectUrl" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>

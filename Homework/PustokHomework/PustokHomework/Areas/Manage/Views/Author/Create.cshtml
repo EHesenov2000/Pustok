@@ -1,0 +1,32 @@
+﻿@using PustokHomework.Models
+@model Author
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="@Model.FullName">Full name</label>
+            <input type="text" asp-for="@Model.FullName" class="form-control" id="FullName" placeholder="Full name">
+            <span asp-validation-for="@Model.FullName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Desc">Desc</label>
+            <textarea asp-for="@Model.Desc" class="form-control" id="Desc" rows="3"></textarea>
+            <span asp-validation-for="@Model.Desc" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.PhotoFile">Photo</label>
+            <input asp-for="@Model.PhotoFile" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.PhotoFile" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>

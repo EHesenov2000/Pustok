@@ -1,0 +1,55 @@
+﻿@using PustokHomework.Models
+@using PustokHomework.Enums
+@model Order
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="container-fluid">
+    <div class="card mb-4">
+        <div class="card-header row">
+            <div class="col-md-6">
+                @Model.FullName  -  @Model.CreatedAt.ToString("HH:mm - dd MMMM yyyy")
+            </div>
+            <div class="col-md-6">
+                <form method="post" asp-action="changestatus">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>Author</label>
+                            <select asp-for="@Model.Status" class="form-control" asp-items="@new  SelectList(Enum.GetNames(typeof(PustokHomework.Enums.OrderStatus)))">
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Set status</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <p class="card-text">Total count: @Model.OrderBooks.Sum(x => x.Count)</p>
+            <p class="card-text">Total amount: @Model.TotalPrice</p>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model.OrderBooks)
+        {
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">Author: @item.AuthorName</p>
+                        <p class="card-text">Price: @item.Price</p>
+                        <p class="card-text">Count: @item.Count</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+

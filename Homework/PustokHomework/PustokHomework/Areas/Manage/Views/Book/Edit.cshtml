@@ -1,0 +1,178 @@
+﻿@using PustokHomework.Models
+@model Book
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    List<Author> authors = (List<Author>)ViewBag.Authors;
+    List<Category> categories = (List<Category>)ViewBag.Categories;
+    List<Tag> tags = (List<Tag>)ViewBag.Tags;
+}
+
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.Name">Name</label>
+                <input asp-for="@Model.Name" class="form-control" id="Name" placeholder="Name">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.AuthorId">Author</label>
+                <select class="form-control" asp-for="@Model.AuthorId" asp-items="@(new SelectList(authors,"Id","FullName"))">
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.CategoryId">Category</label>
+                <select class="form-control" asp-for="@Model.CategoryId" asp-items="@(new SelectList(categories,"Id","Name"))">
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.Price">Price</label>
+                <input asp-for="@Model.Price" class="form-control" id="Price" placeholder="Price">
+                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.ProducingPrice">ProducingPrice</label>
+                <input asp-for="@Model.ProducingPrice" class="form-control" id="ProducingPrice" placeholder="ProducingPrice">
+                <span asp-validation-for="@Model.ProducingPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.DiscountPercent">DiscountPercent</label>
+                <input asp-for="@Model.DiscountPercent" class="form-control" id="DiscountPercent" placeholder="DiscountPercent">
+                <span asp-validation-for="@Model.DiscountPercent" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-1">
+                <label asp-for="@Model.IsAvailable">IsAvailable</label>
+                <input asp-for="@Model.IsAvailable" class="form-control" id="IsAvailable" placeholder="IsAvailable">
+                <span asp-validation-for="@Model.IsAvailable" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-1">
+                <label asp-for="@Model.IsFeatured">IsFeatured</label>
+                <input asp-for="@Model.IsFeatured" class="form-control" id="IsFeatured" placeholder="IsFeatured">
+                <span asp-validation-for="@Model.IsFeatured" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-1">
+                <label asp-for="@Model.IsNew">IsNew</label>
+                <input asp-for="@Model.IsNew" class="form-control" id="IsNew" placeholder="IsNew">
+                <span asp-validation-for="@Model.IsNew" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-7">
+                <label asp-for="@Model.Subtitle">Subtitle</label>
+                <input asp-for="@Model.Subtitle" class="form-control" id="Subtitle" placeholder="Subtitle">
+                <span asp-validation-for="@Model.Subtitle" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.TagIds">Tags</label>
+                @*<select class="form-control" asp-for="@Model.TagIds" asp-items="@(new SelectList(tags,"Id","Name"))">
+        </select>*@
+                <select class="form-control" asp-for="@Model.TagIds">
+                    @foreach (var item in tags)
+                    {
+                        if (Model.BookTags.Any(x => x.TagId == item.Id))
+                        {
+                            <option selected value="@item.Id">@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="@Model.Code">Code</label>
+                <input asp-for="@Model.Code" class="form-control" id="Code" placeholder="Code">
+                <span asp-validation-for="@Model.Code" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Desc">Desc</label>
+            <textarea asp-for="@Model.Desc" class="form-control" id="Desc" rows="3"></textarea>
+            <span asp-validation-for="@Model.Desc" class="text-danger"></span>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.PosterPhoto">Poster</label>
+                <input asp-for="@Model.PosterPhoto" />
+                <span asp-validation-for="@Model.PosterPhoto" class="text-danger"></span>
+
+                @{
+                    BookImage poster = Model.BookImages.FirstOrDefault(x => x.IsPoster);
+
+                    if (poster != null)
+                    {
+                        <div class="img-box" style="position:relative;max-width:200px;width:200px;height:200px;max-height:200px;">
+                            <img class="d-block" src="~/uploads/@poster.Image" style="max-width:180px;width:180px;height:180px;max-height:180px;margin-left:10px;padding-top:20px" />
+                            <i class="fas fa-times remove-img-box" style="color:red;position:absolute;cursor:pointer;right:4px;top:2px;font-size:17px"></i>
+                            <input type="hidden" name="PosterId" value="@poster.Id" />
+                        </div>
+                    }
+
+                }
+            </div>
+
+
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.HoverPosterPhoto">Hover Poster</label>
+                <input asp-for="@Model.HoverPosterPhoto" />
+                <span asp-validation-for="@Model.HoverPosterPhoto" class="text-danger"></span>
+
+
+                @{
+                    BookImage hoverPoster = Model.BookImages.FirstOrDefault(x => x.IsHoverPoster);
+
+                    if (hoverPoster != null)
+                    {
+                        <div class="img-box" style="position:relative;max-width:200px;width:200px;height:200px;max-height:200px;">
+                            <img class="d-block" src="~/uploads/@hoverPoster.Image" style="max-width:180px;width:180px;height:180px;max-height:180px;margin-left:10px;padding-top:20px" />
+                            <i class="fas fa-times remove-img-box" style="color:red;position:absolute;cursor:pointer;right:4px;top:2px;font-size:17px"></i>
+                            <input type="hidden" name="HoverPosterId" value="@hoverPoster.Id" />
+                        </div>
+                    }
+
+                }
+            </div>
+
+            <div class="form-group col-md-12">
+                <label asp-for="@Model.Photos">Photos</label>
+                <input asp-for="@Model.Photos" />
+                <span asp-validation-for="@Model.Photos" class="text-danger"></span>
+                <div class="row">
+                    @foreach (var item in Model.BookImages.Where(x => x.IsHoverPoster == false && !x.IsPoster))
+                    {
+                        <div class="img-box col-md-4" style="position:relative;max-width:200px;width:200px;height:200px;max-height:200px;">
+                            <img class="d-block" src="~/uploads/@item.Image" style="max-width:180px;width:180px;height:180px;max-height:180px;margin-left:10px;padding-top:20px" />
+                            <i class="fas fa-times remove-img-box" style="color:red;position:absolute;cursor:pointer;right:4px;top:2px;font-size:17px"></i>
+                            <input type="hidden" name="PhotosId[]" value="@item.Id" />
+                        </div>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(document).on("click", ".remove-img-box", function (e) {
+                $(this).parents(".img-box").attr("style", "background-color:unset");
+                $(this).parents(".img-box").empty();
+            })
+        })
+    </script>
+}
+
+

@@ -1,0 +1,40 @@
+﻿@using PustokHomework.Models
+@model Promotion
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="@Model.Title">Title</label>
+            <input type="text" asp-for="@Model.Title" class="form-control" id="title" placeholder="Title">
+            <span asp-validation-for="@Model.Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.SubTitle">SubTitle</label>
+            <textarea asp-for="@Model.SubTitle" class="form-control" id="Subtitle" rows="3"></textarea>
+            <span asp-validation-for="@Model.SubTitle" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.PhotoFile">Photo</label>
+            <input asp-for="@Model.PhotoFile" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.PhotoFile" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.RedirectUrl">RedirectUrl</label>
+            <input asp-for="@Model.RedirectUrl" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.RedirectUrl" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.LocationStatus">LocationStatus</label>
+            <input asp-for="@Model.LocationStatus" class="form-control col-md-2" rows="3"></input>
+            <span asp-validation-for="@Model.LocationStatus" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>

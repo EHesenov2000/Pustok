@@ -1,0 +1,93 @@
+﻿@using PustokHomework.ViewModels
+@model List<BasketItemViewModel>
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<main id="content" class="page-section inner-page-sec-padding-bottom space-db--20">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Checkout Form s-->
+                <div class="checkout-form">
+                    <div class="row row-40">
+                        <div class="col-12">
+                            <h1 class="quick-title">Checkout</h1>
+                            <!-- Slide Down Trigger  -->
+                            <!-- Slide Down Blox ==> Login Box  -->
+                            <!-- Slide Down Blox ==> Cupon Box -->
+                            <div class="checkout-slidedown-box" id="quick-cupon">
+                                <form action="https://demo.hasthemes.com/pustok-preview/pustok/">
+                                    <div class="checkout_coupon">
+                                        <input type="text" class="mb-0" placeholder="Coupon Code">
+                                        <a href="#" class="btn btn-outlined">Apply coupon</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 mb--20">
+                            <!-- Billing Address -->
+
+                            <form id="order" asp-action="create" method="post" class="mb-40">
+
+                                <h4 class="checkout-title">Billing Address</h4>
+                                <div class="row">
+                                    @if (!ViewBag.IsAuthenticated)
+                                    {
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label>Full name</label>
+                                            <input required name="FullName" type="text" placeholder="First Name">
+                                        </div>
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label>Contact phone</label>
+                                            <input required name="ContactPhone" type="text" placeholder="phone">
+                                        </div>
+                                        <div class="col-md-12 order-note-block mt--30">
+                                            <label for="order-note">Address</label>
+                                            <textarea required name="Address" id="order-note" cols="30" rows="10" class="order-note"
+                                                      placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                        </div>
+                                    }
+
+                                    <div class="col-md-12 order-note-block mt--30">
+                                        <label for="order-note">Order note</label>
+                                        <textarea name="Note" id="order-note" cols="30" rows="10" class="order-note"
+                                                  placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                    </div>
+                                </div>
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </form>
+
+                            <!-- Shipping Address -->
+
+
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="row">
+                                <!-- Cart Total -->
+                                <div class="col-12">
+                                    <div class="checkout-cart-total">
+                                        <h2 class="checkout-title">YOUR ORDER</h2>
+                                        <h4>Product <span>Total</span></h4>
+                                        <ul>
+                                            @foreach (var item in Model)
+                                            {
+                                                <li>
+                                                    <span class="left">@item.Name X @item.Count</span> <span class="right">$@item.TotalPrice</span>
+                                                </li>
+                                            }
+                                        </ul>
+                                        <p>Sub Total <span>$@Model.Sum(x => x.TotalPrice)</span></p>
+                                        <button type="submit" form="order" class="place-order w-100">Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

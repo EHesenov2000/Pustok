@@ -1,0 +1,109 @@
+﻿@using PustokHomework.Models
+@model Book
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    List<Author> authors = (List<Author>)ViewBag.Authors;
+    List<Category> categories = (List<Category>)ViewBag.Categories;
+    List<Tag> tags = (List<Tag>)ViewBag.Tags;
+
+}
+
+<div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="@Model.Name">Name</label>
+                <input asp-for="@Model.Name" class="form-control" id="Name" placeholder="Name">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.AuthorId">Author</label>
+                <select class="form-control" asp-for="@Model.AuthorId" asp-items="@(new SelectList(authors,"Id","FullName"))">
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                    <label asp-for="@Model.CategoryId">Category</label>
+                    <select class="form-control" asp-for="@Model.CategoryId" asp-items="@(new SelectList(categories,"Id","Name"))">
+                    </select>
+                </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.Price">Price</label>
+                <input asp-for="@Model.Price" class="form-control" id="Price" placeholder="Price">
+                <span asp-validation-for="@Model.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.ProducingPrice">ProducingPrice</label>
+                <input asp-for="@Model.ProducingPrice" class="form-control" id="ProducingPrice" placeholder="ProducingPrice">
+                <span asp-validation-for="@Model.ProducingPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.DiscountPercent">DiscountPercent</label>
+                <input asp-for="@Model.DiscountPercent" class="form-control" id="DiscountPercent" placeholder="DiscountPercent">
+                <span asp-validation-for="@Model.DiscountPercent" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-1">
+                <label asp-for="@Model.IsAvailable">IsAvailable</label>
+                <input asp-for="@Model.IsAvailable" class="form-control" id="IsAvailable" placeholder="IsAvailable">
+                <span asp-validation-for="@Model.IsAvailable" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-1">
+                <label asp-for="@Model.IsFeatured">IsFeatured</label>
+                <input asp-for="@Model.IsFeatured" class="form-control" id="IsFeatured" placeholder="IsFeatured">
+                <span asp-validation-for="@Model.IsFeatured" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-1">
+                <label asp-for="@Model.IsNew">IsNew</label>
+                <input asp-for="@Model.IsNew" class="form-control" id="IsNew" placeholder="IsNew">
+                <span asp-validation-for="@Model.IsNew" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-7">
+                <label asp-for="@Model.Subtitle">Subtitle</label>
+                <input asp-for="@Model.Subtitle" class="form-control" id="Subtitle" placeholder="Subtitle">
+                <span asp-validation-for="@Model.Subtitle" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="@Model.TagIds">Tags</label>
+                <select class="form-control" asp-for="@Model.TagIds" asp-items="@(new SelectList(tags,"Id","Name"))">
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="@Model.Code">Code</label>
+                <input asp-for="@Model.Code" class="form-control" id="Code" placeholder="Code">
+                <span asp-validation-for="@Model.Code" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Desc">Desc</label>
+            <textarea asp-for="@Model.Desc" class="form-control" id="Desc" rows="3"></textarea>
+            <span asp-validation-for="@Model.Desc" class="text-danger"></span>
+        </div>
+        <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label asp-for="@Model.PosterPhoto">Poster</label>
+                    <input asp-for="@Model.PosterPhoto" />
+                    <span asp-validation-for="@Model.PosterPhoto" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="@Model.HoverPosterPhoto">Hover Poster</label>
+                    <input asp-for="@Model.HoverPosterPhoto" />
+                    <span asp-validation-for="@Model.HoverPosterPhoto" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label asp-for="@Model.Photos">Hover Poster</label>
+                    <input asp-for="@Model.Photos" />
+                    <span asp-validation-for="@Model.Photos" class="text-danger"></span>
+                </div>
+
+            </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>

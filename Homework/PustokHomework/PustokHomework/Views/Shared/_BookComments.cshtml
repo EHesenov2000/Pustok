@@ -1,0 +1,22 @@
+﻿
+"@using PustokHomework.Models
+@model List<BookComment>
+@foreach (var comment in Model)
+{
+    <div class="review-comment mb--20">
+        <div class="text">
+            <div class="rating-block mb--15">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="ion-android-star-outline @(i<=comment.Rate?"star_on":"")"></span>
+                }
+            </div>
+            <h6 class="author">
+                @comment.AppUser.FullName – <span class="font-weight-400">@comment.CreatedAt.ToString("HH:mm d MMMM, yyyy")</span>
+            </h6>
+            <p>
+                @comment.Text
+            </p>
+        </div>
+    </div>
+}
